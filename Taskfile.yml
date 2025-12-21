@@ -20,6 +20,12 @@ tasks:
     cmds:
       - go run ./cmd/server
 
+  install:
+    desc: Install backend dependencies
+    dir: backend 
+    cmds:
+     - go mod tidy
+
   test-unit:
     desc: Run backend unit tests 
     dir: backend
