@@ -8,7 +8,9 @@
     "backend:build": "task build",
     "backend:run": "task run",
     "backend:unit-test": "task test-unit",
-    "schema:new": "task schema-new -- "
+    "schema:new": "task schema-new -- ",
+    "schema:up": "task migrate up",
+    "schema:down": "task migrate down"
   },
   "keywords": [],
   "author": "",

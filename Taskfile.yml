@@ -22,12 +22,12 @@ tasks:
 
   install:
     desc: Install backend dependencies
-    dir: backend 
+    dir: backend
     cmds:
-     - go mod tidy
+      - go mod tidy
 
   test-unit:
-    desc: Run backend unit tests 
+    desc: Run backend unit tests
     dir: backend
     cmds:
       - go test -v
@@ -38,3 +38,15 @@ tasks:
     dir: backend
     cmds:
       - migrate create -ext sql -dir migrations -seq {{.CLI_ARGS}}
+
+  migrate-up:
+    desc: Run migrations on Supabase
+    dir: backend
+    cmds:
+      - migrate -path migrations -database "$DATABASE_URL" up
+
+  migrate-down:
+    desc: Run migrations on Supabase
+    dir: backend
+    cmds:
+      - migrate -path migrations -database "$DATABASE_URL" down
