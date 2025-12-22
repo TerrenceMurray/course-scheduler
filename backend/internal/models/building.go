@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/google/uuid"
 )
@@ -19,7 +20,7 @@ func NewBuilding(id uuid.UUID, name string) *Building {
 }
 
 func (b *Building) Validate() error {
-	if b.Name == "" {
+	if strings.TrimSpace(b.Name) == "" {
 		return errors.New("building name is required")
 	}
 
