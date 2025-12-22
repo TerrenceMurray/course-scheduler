@@ -31,3 +31,10 @@ tasks:
     dir: backend
     cmds:
       - go test -v
+
+  # DB
+  schema-new:
+    desc: Create a new sql sequence in migrations
+    dir: backend
+    cmds:
+      - migrate create -ext sql -dir migrations -seq {{.CLI_ARGS}}

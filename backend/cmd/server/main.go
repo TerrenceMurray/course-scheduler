@@ -12,7 +12,6 @@ type Room struct {
 	ID        uuid.UUID `json:"id"`
 	Name      string    `json:"name"`
 	Type      string    `json:"type"`
-	Category  string    `json:"category,omitempty"`
 	Building  string    `json:"building"`
 	Capacity  uint      `json:"capacity"`
 	CreatedAt time.Time `json:"created_at"`
@@ -52,8 +51,6 @@ type TimeRange struct {
 
 // Availability[room id][day of the week (0-6)] = [(int, int), ..., (int, int)]
 type Availability map[string]map[int][]TimeRange
-
-type RoomsByType map[string][]int
 
 func main() {
 	var scheduledSessions []ScheduledSession = []ScheduledSession{}

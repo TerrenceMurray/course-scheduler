@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "backend:build": "task build",
     "backend:run": "task run",
-    "backend:unit-test": "task test-unit"
+    "backend:unit-test": "task test-unit",
+    "schema:new": "task schema-new -- "
   },
   "keywords": [],
   "author": "",
