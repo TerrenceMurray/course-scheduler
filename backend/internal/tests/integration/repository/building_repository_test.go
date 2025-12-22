@@ -2,25 +2,34 @@ package integration_test
 
 import (
 	"context"
-	"database/sql"
 	"testing"
 
 	"github.com/TerrenceMurray/course-scheduler/internal/models"
 	"github.com/TerrenceMurray/course-scheduler/internal/repository"
+	"github.com/TerrenceMurray/course-scheduler/internal/tests/utils"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/suite"
 )
 
 type BuildingRepositorySuite struct {
 	suite.Suite
-	db   *sql.DB
-	repo repository.BuildingRepositoryInterface
-	ctx  context.Context
+	testDB *utils.TestDB
+	repo   repository.BuildingRepositoryInterface
+	ctx    context.Context
 }
 
-func (s *BuildingRepositorySuite) SetupSuite() {}
+func (s *BuildingRepositorySuite) SetupSuite() {
+	s.testDB = utils.NewTestDB(s.T())
+	s.repo = repository.NewBuildingRepository(s.testDB.DB, s.testDB.Logger)
+}
 
-func (s *BuildingRepositorySuite) TearDownSuite() {}
+func (s *BuildingRepositorySuite) TearDownSuite() {
+	s.testDB.Close()
+}
+
+func (s *BuildingRepositorySuite) TearDownTest() {
+	s.testDB.Truncate("building")
+}
 
 // Test Methods
 

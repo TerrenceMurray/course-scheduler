@@ -10,8 +10,8 @@
     "backend:run": "task run",
     "backend:unit-test": "task test-unit",
     "schema:new": "task schema-new -- ",
-    "schema:up": "task migrate up",
-    "schema:down": "task migrate down",
+    "schema:up": "task migrate-up",
+    "schema:down": "task migrate-down",
     "schema:generate-models": "task jet-gen"
   },
   "keywords": [],

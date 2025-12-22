@@ -44,17 +44,17 @@ func (b *BuildingRepository) Create(ctx context.Context, building *models.Buildi
 		return nil, fmt.Errorf("validation failed: %w", err)
 	}
 
-	newBuilding := model.Building{
+	newBuilding := model.Buildings{
 		ID:   uuid.New(),
 		Name: building.Name,
 	}
 
-	insertStmt := table.Building.INSERT(
-		table.Building.ID,
-		table.Building.Name,
-	).MODEL(newBuilding).RETURNING()
+	insertStmt := table.Buildings.INSERT(
+		table.Buildings.ID,
+		table.Buildings.Name,
+	).MODEL(newBuilding).RETURNING(table.Buildings.AllColumns)
 
-	var dest model.Building
+	var dest model.Buildings
 	err := insertStmt.QueryContext(ctx, b.db, &dest)
 
 	if err != nil {
@@ -66,11 +66,11 @@ func (b *BuildingRepository) Create(ctx context.Context, building *models.Buildi
 }
 
 func (b *BuildingRepository) GetByID(ctx context.Context, id uuid.UUID) (*models.Building, error) {
-	stmt := table.Building.
-		SELECT(table.Building.AllColumns).
-		WHERE(table.Building.ID.EQ(UUID(id)))
+	stmt := table.Buildings.
+		SELECT(table.Buildings.AllColumns).
+		WHERE(table.Buildings.ID.EQ(UUID(id)))
 
-	var dest model.Building
+	var dest model.Buildings
 	err := stmt.QueryContext(ctx, b.db, &dest)
 
 	if err != nil {
@@ -85,11 +85,11 @@ func (b *BuildingRepository) GetByID(ctx context.Context, id uuid.UUID) (*models
 }
 
 func (b *BuildingRepository) List(ctx context.Context) ([]models.Building, error) {
-	stmt := table.Building.
-		SELECT(table.Building.AllColumns).
-		ORDER_BY(table.Building.Name.ASC())
+	stmt := table.Buildings.
+		SELECT(table.Buildings.AllColumns).
+		ORDER_BY(table.Buildings.Name.ASC())
 
-	var dest []model.Building
+	var dest []model.Buildings
 	err := stmt.QueryContext(ctx, b.db, &dest)
 
 	if err != nil {

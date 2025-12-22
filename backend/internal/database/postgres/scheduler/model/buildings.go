@@ -11,7 +11,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type Building struct {
+type Buildings struct {
 	ID   uuid.UUID `sql:"primary_key"`
 	Name string
 }

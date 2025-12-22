@@ -1,7 +1,7 @@
 
 -- scheduler schema define in 000001_create_types_tables
 
-CREATE TABLE scheduler.building (
+CREATE TABLE scheduler.buildings (
     id UUID PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
@@ -16,7 +16,7 @@ CREATE TABLE scheduler.rooms (
 );
 
 ALTER TABLE scheduler.rooms ADD FOREIGN KEY (type) REFERENCES scheduler.room_types(name);
-ALTER TABLE scheduler.rooms ADD FOREIGN KEY (building) REFERENCES scheduler.building(id);
+ALTER TABLE scheduler.rooms ADD FOREIGN KEY (building) REFERENCES scheduler.buildings(id);
 
 ALTER TABLE scheduler.rooms 
 ADD CONSTRAINT CHK_RoomCapacity CHECK (capacity>0);
