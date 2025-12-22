@@ -50,3 +50,9 @@ tasks:
     dir: backend
     cmds:
       - migrate -path migrations -database "$DATABASE_URL" down
+
+  jet-gen:
+    desc: Generate Go models from database schema using go-jet
+    dir: backend
+    cmds:
+      - jet -dsn="$DATABASE_URL" -schema=scheduler -path=./internal/database

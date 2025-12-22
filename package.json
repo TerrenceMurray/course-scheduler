@@ -6,11 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "backend:build": "task build",
+    "backend:install": "task install",
     "backend:run": "task run",
     "backend:unit-test": "task test-unit",
     "schema:new": "task schema-new -- ",
     "schema:up": "task migrate up",
-    "schema:down": "task migrate down"
+    "schema:down": "task migrate down",
+    "schema:generate-models": "task jet-gen"
   },
   "keywords": [],
   "author": "",
