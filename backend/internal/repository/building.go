@@ -18,8 +18,10 @@ var _ BuildingRepositoryInterface = (*BuildingRepository)(nil)
 
 type BuildingRepositoryInterface interface {
 	Create(ctx context.Context, building *models.Building) (*models.Building, error)
+	CreateBatch(ctx context.Context, buildings []*models.Building) ([]*models.Building, error)
 	GetByID(ctx context.Context, id uuid.UUID) (*models.Building, error)
-	List(ctx context.Context) ([]models.Building, error)
+	List(ctx context.Context) ([]models.Building, error) // TODO: Update to pointer
+	Delete(ctx context.Context, id uuid.UUID) error
 }
 
 type BuildingRepository struct {
@@ -65,6 +67,54 @@ func (b *BuildingRepository) Create(ctx context.Context, building *models.Buildi
 	return models.NewBuilding(dest.ID, dest.Name), nil
 }
 
+func (b *BuildingRepository) CreateBatch(ctx context.Context, buildings []*models.Building) ([]*models.Building, error) {
+	if len(buildings) < 1 {
+		return nil, errors.New("at least one building is required")
+	}
+
+	tx, err := b.db.BeginTx(ctx, &sql.TxOptions{ReadOnly: false})
+	if err != nil {
+		b.logger.Error("failed begin transaction", zap.Error(err))
+		return nil, fmt.Errorf("failed to begin transaction: %w", err)
+	}
+
+	defer tx.Rollback()
+
+	var newBuildings []*models.Building
+	for _, building := range buildings {
+
+		if building == nil {
+			return nil, errors.New("building cannot be nil")
+		}
+
+		if err := building.Validate(); err != nil {
+			return nil, fmt.Errorf("failed to create building: %w", err)
+		}
+
+		insertStmt := table.Buildings.
+			INSERT(
+				table.Buildings.AllColumns,
+			).
+			MODEL(building).
+			RETURNING(table.Buildings.AllColumns)
+
+		var dest model.Buildings
+		if err := insertStmt.QueryContext(ctx, tx, &dest); err != nil {
+			b.logger.Error("failed to create building", zap.Error(err))
+			return nil, fmt.Errorf("failed to create building: %w", err)
+		}
+
+		newBuildings = append(newBuildings, models.NewBuilding(dest.ID, dest.Name))
+	}
+
+	if err := tx.Commit(); err != nil {
+		b.logger.Error("failed to commit transaction", zap.Error(err))
+		return nil, fmt.Errorf("failed to commit transaction: %w", err)
+	}
+
+	return newBuildings, nil
+}
+
 func (b *BuildingRepository) GetByID(ctx context.Context, id uuid.UUID) (*models.Building, error) {
 	stmt := table.Buildings.
 		SELECT(table.Buildings.AllColumns).
@@ -106,4 +156,31 @@ func (b *BuildingRepository) List(ctx context.Context) ([]models.Building, error
 	}
 
 	return buildings, nil
+}
+
+func (b *BuildingRepository) Delete(ctx context.Context, id uuid.UUID) error {
+	deleteStmt := table.Buildings.
+		DELETE().
+		WHERE(
+			table.Buildings.ID.EQ(UUID(id)),
+		)
+
+	result, err := deleteStmt.ExecContext(ctx, b.db)
+
+	if err != nil {
+		b.logger.Error("failed to delete building", zap.Error(err))
+		return fmt.Errorf("failed to delete building: %w", err)
+	}
+
+	rowAffected, err := result.RowsAffected()
+	if err != nil {
+		b.logger.Error("failed to delete building", zap.Error(err))
+		return fmt.Errorf("failed to delete building: %w", err)
+	}
+
+	if rowAffected == 0 {
+		return ErrNotFound
+	}
+
+	return nil
 }

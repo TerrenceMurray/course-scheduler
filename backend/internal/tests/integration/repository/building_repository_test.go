@@ -95,6 +95,76 @@ func (s *BuildingRepositorySuite) TestList_Empty() {
 	s.Require().Equal(0, len(actual))
 }
 
+// TestCreateBatch
+
+func (s *BuildingRepositorySuite) TestCreateBatch_Success() {
+	expected := []*models.Building{
+		models.NewBuilding(uuid.New(), "Building 1"),
+		models.NewBuilding(uuid.New(), "Building 2"),
+	}
+
+	actual, err := s.repo.CreateBatch(s.ctx, expected)
+
+	s.Require().NoError(err)
+	s.Require().Equal(2, len(actual))
+	s.Require().NotNil(actual)
+	for i, building := range expected {
+		s.Require().Equal(building.ID, actual[i].ID)
+		s.Require().Equal(building.Name, actual[i].Name)
+	}
+}
+
+func (s *BuildingRepositorySuite) TestCreateBatch_ValidationError() {
+	expected := []*models.Building{
+		models.NewBuilding(uuid.New(), " "),
+		models.NewBuilding(uuid.New(), "Building 2"),
+	}
+
+	actual, err := s.repo.CreateBatch(s.ctx, expected)
+
+	s.Require().Error(err)
+	s.Require().ErrorContains(err, "failed to create building")
+	s.Require().Nil(actual)
+}
+
+func (s *BuildingRepositorySuite) TestCreateBatch_RollbackOnError() {
+	buildings := []*models.Building{
+		models.NewBuilding(uuid.New(), "Building 1"),
+		models.NewBuilding(uuid.New(), " "),
+	}
+
+	_, createErr := s.repo.CreateBatch(s.ctx, buildings)
+
+	actual, getErr := s.repo.List(s.ctx)
+
+	s.Require().Error(createErr)
+	s.Require().NoError(getErr)
+	s.Require().Equal(0, len(actual))
+}
+
+// TestDelete
+func (s *BuildingRepositorySuite) TestDelete_Success() {
+	building, createErr := s.repo.Create(s.ctx, models.NewBuilding(uuid.New(), "Building 1"))
+
+	err := s.repo.Delete(s.ctx, building.ID)
+
+	actual, getErr := s.repo.List(s.ctx)
+
+	s.Require().NoError(createErr)
+	s.Require().NoError(getErr)
+	s.Require().NoError(err)
+	s.Require().NotNil(actual)
+	s.Require().Equal(0, len(actual))
+}
+
+func (s *BuildingRepositorySuite) TestDelete_NotFound() {
+	err := s.repo.Delete(s.ctx, uuid.New())
+
+	s.Require().Error(err)
+	s.Require().NotNil(err)
+	s.Require().ErrorContains(err, repository.ErrNotFound.Error())
+}
+
 // TestBuildingRepositorySuite
 func TestBuildingRepositorySuite(t *testing.T) {
 	suite.Run(t, new(BuildingRepositorySuite))

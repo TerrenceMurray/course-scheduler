@@ -23,6 +23,7 @@ type CourseRepositoryInterface interface {
 	GetByID(ctx context.Context, id uuid.UUID) (*models.Course, error)
 	List(ctx context.Context) ([]models.Course, error)
 	Delete(ctx context.Context, id uuid.UUID) error
+	Update(ctx context.Context, id uuid.UUID, updates *models.CourseUpdate) (*models.Course, error)
 }
 
 type CourseRepository struct {
@@ -174,4 +175,42 @@ func (c *CourseRepository) List(ctx context.Context) ([]models.Course, error) {
 	}
 
 	return courses, nil
+}
+
+func (c *CourseRepository) Update(ctx context.Context, id uuid.UUID, updates *models.CourseUpdate) (*models.Course, error) {
+	if updates == nil {
+		return nil, errors.New("update cannot be nil")
+	}
+
+	if err := updates.Validate(); err != nil {
+		return nil, fmt.Errorf("validation failed: %w", err)
+	}
+
+	var columns ColumnList
+	if updates.Name != nil {
+		columns = append(columns, table.Courses.Name)
+	}
+
+	if len(columns) == 0 {
+		return nil, errors.New("no fields to update")
+	}
+
+	updateStmt := table.Courses.
+		UPDATE(columns).
+		MODEL(updates).
+		WHERE(table.Courses.ID.EQ(UUID(id))).
+		RETURNING(table.Courses.AllColumns)
+
+	var dest model.Courses
+	err := updateStmt.QueryContext(ctx, c.db, &dest)
+
+	if err != nil {
+		if errors.Is(err, qrm.ErrNoRows) {
+			return nil, ErrNotFound
+		}
+		return nil, fmt.Errorf("failed to update courses: %w", err)
+	}
+
+	return models.NewCourse(dest.ID, dest.Name, dest.CreatedAt, dest.UpdatedAt), nil
+
 }

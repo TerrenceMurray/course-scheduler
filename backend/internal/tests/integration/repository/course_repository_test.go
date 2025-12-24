@@ -190,6 +190,45 @@ func (s *CourseRepositorySuite) TestList_Empty() {
 	s.Require().Len(actual, 0)
 }
 
+// TestUpdateCourse
+func (s *CourseRepositorySuite) TestUpdateCourse_Success() {
+	now := time.Now()
+	course, createErr := s.repo.Create(s.ctx, models.NewCourse(uuid.New(), "Advnced Data Analytics", &now, nil))
+
+	updatedName := "Adv. Data Analytics"
+	actual, updateErr := s.repo.Update(s.ctx, course.ID, &models.CourseUpdate{
+		Name: &updatedName,
+	})
+
+	s.Require().NoError(createErr)
+	s.Require().NoError(updateErr)
+	s.Require().NotNil(actual)
+	s.Require().NotNil(actual.UpdatedAt)
+	s.Require().Contains(actual.Name, "Adv.")
+}
+
+func (s *CourseRepositorySuite) TestUpdateCourse_ValidationError() {
+	updatedName := ""
+	actual, err := s.repo.Update(s.ctx, uuid.New(), &models.CourseUpdate{
+		Name: &updatedName,
+	})
+
+	s.Require().Error(err)
+	s.Require().Nil(actual)
+	s.Require().ErrorContains(err, "validation failed")
+}
+
+func (s *CourseRepositorySuite) TestUpdateCourse_ErrNotFound() {
+	updatedName := "Adv. Data Analytics"
+	actual, err := s.repo.Update(s.ctx, uuid.New(), &models.CourseUpdate{
+		Name: &updatedName,
+	})
+
+	s.Require().Error(err)
+	s.Require().Nil(actual)
+	s.Require().ErrorContains(err, "not found")
+}
+
 // TestCourseRepositorySuite
 func TestCourseRepositorySuite(t *testing.T) {
 	suite.Run(t, new(CourseRepositorySuite))

@@ -26,32 +26,38 @@ tasks:
     cmds:
       - go mod tidy
 
-  test-unit:
+  test:unit:
     desc: Run backend unit tests
     dir: backend
     cmds:
       - go test -v
 
   # DB
-  schema-new:
+  schema:new:
     desc: Create a new sql sequence in migrations
     dir: backend
     cmds:
       - migrate create -ext sql -dir migrations -seq {{.CLI_ARGS}}
 
-  migrate-up:
+  migrate:up:
     desc: Run up migration on Supabase
     dir: backend
     cmds:
       - migrate -path migrations -database "$DATABASE_URL" up
 
-  migrate-down:
+  migrate:force:
+    desc: Run up migration on Supabase
+    dir: backend
+    cmds:
+      - migrate -path migrations -database "$DATABASE_URL" force {{ .CLI_ARGS }}
+
+  migrate:down:
     desc: Run down migration on Supabase
     dir: backend
     cmds:
       - migrate -path migrations -database "$DATABASE_URL" down
 
-  jet-gen:
+  jet:gen:
     desc: Generate Go models from database schema using go-jet
     dir: backend
     cmds:

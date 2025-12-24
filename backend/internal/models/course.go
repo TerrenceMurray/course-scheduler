@@ -36,3 +36,16 @@ func (c *Course) Validate() error {
 
 	return nil
 }
+
+// CourseUpdate represents partial update fields for a course.
+type CourseUpdate struct {
+	Name *string `json:"name,omitempty"`
+}
+
+func (u *CourseUpdate) Validate() error {
+	if u.Name != nil && strings.TrimSpace(*u.Name) == "" {
+		return errors.New("name cannot be empty")
+	}
+
+	return nil
+}

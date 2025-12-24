@@ -12,7 +12,8 @@ CREATE TABLE scheduler.rooms (
     type VARCHAR(255) NOT NULL,
     building UUID NOT NULL,
     capacity INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT NULL
 );
 
 ALTER TABLE scheduler.rooms ADD FOREIGN KEY (type) REFERENCES scheduler.room_types(name);
@@ -20,3 +21,8 @@ ALTER TABLE scheduler.rooms ADD FOREIGN KEY (building) REFERENCES scheduler.buil
 
 ALTER TABLE scheduler.rooms 
 ADD CONSTRAINT CHK_RoomCapacity CHECK (capacity>0);
+
+CREATE TRIGGER update_rooms_timestamp
+BEFORE UPDATE ON scheduler.rooms
+FOR EACH ROW
+EXECUTE FUNCTION scheduler.update_timestamp();
