@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -39,7 +40,7 @@ func NewSchedule(
 }
 
 func (s *Schedule) Validate() error {
-	if s.Name == "" {
+	if strings.TrimSpace(s.Name) == "" {
 		return errors.New("schedule name is required")
 	}
 
@@ -50,6 +51,31 @@ func (s *Schedule) Validate() error {
 	for _, session := range s.Sessions {
 		if err := session.Validate(); err != nil {
 			return err
+		}
+	}
+
+	return nil
+}
+
+// ScheduleUpdate represents partial update fields for a Schedule.
+type ScheduleUpdate struct {
+	Name     *string            `json:"name,omitempty"`
+	Sessions []ScheduledSession `json:"sessions,omitempty"`
+}
+
+func (u *ScheduleUpdate) Validate() error {
+	if u.Name != nil && strings.TrimSpace(*u.Name) == "" {
+		return errors.New("name cannot be empty")
+	}
+
+	if u.Sessions != nil {
+		if len(u.Sessions) == 0 {
+			return errors.New("sessions cannot be empty")
+		}
+		for _, session := range u.Sessions {
+			if err := session.Validate(); err != nil {
+				return err
+			}
 		}
 	}
 
