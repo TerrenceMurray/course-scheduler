@@ -43,13 +43,15 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { CountUp } from '@/components/count-up'
+import { CreateRoomModal } from '@/components/modals'
 
-export const Route = createFileRoute('/rooms')({
+export const Route = createFileRoute('/app/rooms')({
   component: RoomsPage,
 })
 
 function RoomsPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [createModalOpen, setCreateModalOpen] = useState(false)
 
   const rooms = [
     { id: '1', name: 'Room 101', building: 'Science Building', type: 'Lecture Hall', capacity: 120, utilization: 85, available: true },
@@ -137,11 +139,17 @@ function RoomsPage() {
             Manage available rooms and their capacities
           </p>
         </div>
-        <Button>
+        <Button onClick={() => setCreateModalOpen(true)}>
           <Plus className="mr-2 size-4" />
           Add Room
         </Button>
       </div>
+
+      <CreateRoomModal
+        open={createModalOpen}
+        onOpenChange={setCreateModalOpen}
+        onSubmit={(data) => console.log('New room:', data)}
+      />
 
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 animate-stagger">

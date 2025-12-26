@@ -44,7 +44,7 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { CountUp } from '@/components/count-up'
 
-export const Route = createFileRoute('/schedule')({
+export const Route = createFileRoute('/app/schedule')({
   component: SchedulePage,
 })
 

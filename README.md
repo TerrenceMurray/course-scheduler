@@ -1,10 +1,12 @@
 # Course Scheduler
 
-Schedule university courses into rooms with conflict detection.
+A full-stack web application for scheduling university courses into rooms with conflict detection.
 
 ## About
 
-A web application for scheduling university courses into available rooms while respecting constraints and preventing double-bookings. Built as a proof of concept for managing academic timetables.
+Course Scheduler helps academic institutions manage their timetables by automatically assigning course sessions to available rooms while respecting constraints and preventing double-bookings. Built as a portfolio project demonstrating modern web development practices.
+
+**[Live Demo](https://course-scheduler.example.com)** · **[Source Code](https://github.com/TerrenceMurray/CourseScheduler)**
 
 ## Features
 
@@ -14,15 +16,30 @@ A web application for scheduling university courses into available rooms while r
 - **Conflict Detection** — Prevents double-booking rooms and validates room type requirements
 - **Schedule Views** — View timetables by course, room, or building
 - **Data Import** — Bulk import rooms and courses via CSV
+- **Modern UI** — Responsive dashboard with dark mode support
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|------------|
-| Backend | Go + Chi router |
-| Database | PostgreSQL (Supabase) |
-| ORM | Go-Jet (type-safe SQL) |
-| Frontend | React + Vite |
+### Frontend
+
+| Technology | Purpose |
+|------------|---------|
+| React 19 | UI framework |
+| TanStack Router | File-based routing with SSR |
+| Tailwind CSS | Utility-first styling |
+| shadcn/ui | Component library |
+| TypeScript | Type safety |
+| Vite | Build tool |
+
+### Backend
+
+| Technology | Purpose |
+|------------|---------|
+| Go | API server |
+| Chi | HTTP router |
+| PostgreSQL | Database |
+| SQLc | Type-safe SQL |
+| golang-migrate | Database migrations |
 
 ## API Endpoints
 
@@ -45,7 +62,7 @@ A web application for scheduling university courses into available rooms while r
 - PostgreSQL (or [Supabase](https://supabase.com) free tier)
 - [Task](https://taskfile.dev) — task runner
 - [golang-migrate](https://github.com/golang-migrate/migrate) — database migrations
-- [go-jet](https://github.com/go-jet/jet) — type-safe SQL query builder
+- [sqlc](https://sqlc.dev) — type-safe SQL code generator
 
 ### Install CLI Tools
 
@@ -56,16 +73,16 @@ go install github.com/go-task/task/v3/cmd/task@latest
 # Database migrations
 go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
-# Go-jet code generator
-go install github.com/go-jet/jet/v2/cmd/jet@latest
+# SQLc code generator
+go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 ```
 
 ### Setup
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/course-scheduler.git
-cd course-scheduler
+git clone https://github.com/TerrenceMurray/CourseScheduler.git
+cd CourseScheduler
 
 # Create .env with your database URL
 echo 'DATABASE_URL=postgres://user:pass@host:5432/dbname?sslmode=require' > .env
@@ -74,10 +91,22 @@ echo 'DATABASE_URL=postgres://user:pass@host:5432/dbname?sslmode=require' > .env
 task migrate-up
 
 # Generate Go models from database
-task jet-gen
+task sqlc-gen
 
 # Run the backend
 task run
+```
+
+### Frontend Development
+
+```bash
+cd frontend
+
+# Install dependencies
+pnpm install
+
+# Start dev server
+pnpm dev
 ```
 
 ### Available Commands
@@ -93,7 +122,7 @@ Run `task --list` to see all commands:
 | `task schema-new <name>` | Create new migration files |
 | `task migrate-up` | Apply all pending migrations |
 | `task migrate-down` | Rollback last migration |
-| `task jet-gen` | Generate Go models from database schema |
+| `task sqlc-gen` | Generate Go models from SQL queries |
 
 ### Environment Variables
 
@@ -123,9 +152,9 @@ course-scheduler/
 │       └── tests/        # Unit & integration tests
 ├── frontend/
 │   └── src/
+│       ├── routes/       # File-based routing (TanStack Router)
 │       ├── components/   # Reusable UI components
-│       ├── views/        # Page views
-│       └── api/          # API client
+│       └── lib/          # Utilities
 └── README.md
 ```
 
@@ -146,7 +175,7 @@ HTTP Request
      │
      ▼
 ┌─────────────┐
-│ Repositories│  Database operations (Go-Jet)
+│ Repositories│  Database operations (SQLc)
 └─────────────┘
      │
      ▼
@@ -171,9 +200,14 @@ Configuration options:
 - `MinBreakBetweenSessions` — Gap between sessions (for travel time)
 - `PreferredSlotDuration` — Align to hourly slots
 
-## Status
+## Screenshots
 
-🚧 Work in progress
+The application features a modern, responsive UI with:
+- Dashboard with scheduling overview
+- Timetable views (week, room, course)
+- Course and room management tables
+- Schedule generation wizard
+- Dark/light mode support
 
 ## License
 

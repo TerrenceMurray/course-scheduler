@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { useState } from 'react'
 import {
   Plus,
   MoreHorizontal,
@@ -22,12 +23,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Badge } from '@/components/ui/badge'
+import { CreateRoomTypeModal } from '@/components/modals'
 
-export const Route = createFileRoute('/room-types')({
+export const Route = createFileRoute('/app/room-types')({
   component: RoomTypesPage,
 })
 
 function RoomTypesPage() {
+  const [createModalOpen, setCreateModalOpen] = useState(false)
+
   const roomTypes = [
     {
       id: '1',
@@ -125,11 +129,17 @@ function RoomTypesPage() {
             Define and manage categories for your rooms
           </p>
         </div>
-        <Button>
+        <Button onClick={() => setCreateModalOpen(true)}>
           <Plus className="mr-2 size-4" />
           Add Room Type
         </Button>
       </div>
+
+      <CreateRoomTypeModal
+        open={createModalOpen}
+        onOpenChange={setCreateModalOpen}
+        onSubmit={(data) => console.log('New room type:', data)}
+      />
 
       {/* Summary Stats */}
       <div className="grid gap-4 md:grid-cols-3 animate-stagger">
@@ -252,7 +262,10 @@ function RoomTypesPage() {
           })}
 
           {/* Add New Card */}
-          <Card className="flex items-center justify-center border-dashed cursor-pointer hover:border-primary/50 hover:bg-muted/50 transition-colors min-h-52">
+          <Card
+            className="flex items-center justify-center border-dashed cursor-pointer hover:border-primary/50 hover:bg-muted/50 transition-colors min-h-52"
+            onClick={() => setCreateModalOpen(true)}
+          >
             <CardContent className="flex flex-col items-center gap-2 text-center p-6">
               <div className="rounded-full bg-muted p-3">
                 <Plus className="size-5 text-muted-foreground" />

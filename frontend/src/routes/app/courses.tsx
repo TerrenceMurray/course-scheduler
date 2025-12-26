@@ -40,8 +40,9 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { CountUp } from '@/components/count-up'
+import { CreateCourseModal } from '@/components/modals'
 
-export const Route = createFileRoute('/courses')({
+export const Route = createFileRoute('/app/courses')({
   component: CoursesPage,
 })
 
@@ -54,6 +55,7 @@ function CoursesPage() {
   const [sortField, setSortField] = useState<SortField>('name')
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
   const [typeFilter, setTypeFilter] = useState<string[]>([])
+  const [createModalOpen, setCreateModalOpen] = useState(false)
 
   const allCourses = [
     { id: '1', code: 'CS101', name: 'Introduction to Computer Science', sessions: 3, totalHours: 4.5, type: 'Lecture', enrolled: 120 },
@@ -211,11 +213,17 @@ function CoursesPage() {
             Manage your courses, sessions, and curriculum
           </p>
         </div>
-        <Button>
+        <Button onClick={() => setCreateModalOpen(true)}>
           <Plus className="mr-2 size-4" />
           Add Course
         </Button>
       </div>
+
+      <CreateCourseModal
+        open={createModalOpen}
+        onOpenChange={setCreateModalOpen}
+        onSubmit={(data) => console.log('New course:', data)}
+      />
 
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 animate-stagger">

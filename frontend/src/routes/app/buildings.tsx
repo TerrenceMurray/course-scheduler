@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { useState } from 'react'
 import {
   Plus,
   DoorOpen,
@@ -22,12 +23,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { CreateBuildingModal } from '@/components/modals'
 
-export const Route = createFileRoute('/buildings')({
+export const Route = createFileRoute('/app/buildings')({
   component: BuildingsPage,
 })
 
 function BuildingsPage() {
+  const [createModalOpen, setCreateModalOpen] = useState(false)
+
   const buildings = [
     {
       id: '1',
@@ -112,11 +116,17 @@ function BuildingsPage() {
             Manage campus buildings and their facilities
           </p>
         </div>
-        <Button>
+        <Button onClick={() => setCreateModalOpen(true)}>
           <Plus className="mr-2 size-4" />
           Add Building
         </Button>
       </div>
+
+      <CreateBuildingModal
+        open={createModalOpen}
+        onOpenChange={setCreateModalOpen}
+        onSubmit={(data) => console.log('New building:', data)}
+      />
 
       {/* Summary Stats */}
       <div className="grid gap-4 md:grid-cols-4 animate-stagger">
@@ -291,7 +301,10 @@ function BuildingsPage() {
           })}
 
           {/* Add New Card */}
-          <Card className="flex items-center justify-center border-dashed cursor-pointer hover:border-primary/50 hover:bg-muted/50 transition-colors min-h-80">
+          <Card
+            className="flex items-center justify-center border-dashed cursor-pointer hover:border-primary/50 hover:bg-muted/50 transition-colors min-h-80"
+            onClick={() => setCreateModalOpen(true)}
+          >
             <CardContent className="flex flex-col items-center gap-2 text-center p-6">
               <div className="rounded-full bg-muted p-3">
                 <Plus className="size-5 text-muted-foreground" />

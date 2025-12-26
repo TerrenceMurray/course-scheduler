@@ -9,48 +9,38 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as ScheduleRouteImport } from './routes/schedule'
-import { Route as RoomsRouteImport } from './routes/rooms'
-import { Route as RoomTypesRouteImport } from './routes/room-types'
-import { Route as GenerateRouteImport } from './routes/generate'
-import { Route as CoursesRouteImport } from './routes/courses'
-import { Route as BuildingsRouteImport } from './routes/buildings'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SigninRouteImport } from './routes/signin'
+import { Route as MarketingRouteImport } from './routes/marketing'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as AppSettingsRouteImport } from './routes/app/settings'
+import { Route as AppScheduleRouteImport } from './routes/app/schedule'
+import { Route as AppRoomsRouteImport } from './routes/app/rooms'
+import { Route as AppRoomTypesRouteImport } from './routes/app/room-types'
+import { Route as AppGenerateRouteImport } from './routes/app/generate'
+import { Route as AppCoursesRouteImport } from './routes/app/courses'
+import { Route as AppBuildingsRouteImport } from './routes/app/buildings'
 
-const SettingsRoute = SettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ScheduleRoute = ScheduleRouteImport.update({
-  id: '/schedule',
-  path: '/schedule',
+const SigninRoute = SigninRouteImport.update({
+  id: '/signin',
+  path: '/signin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RoomsRoute = RoomsRouteImport.update({
-  id: '/rooms',
-  path: '/rooms',
+const MarketingRoute = MarketingRouteImport.update({
+  id: '/marketing',
+  path: '/marketing',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RoomTypesRoute = RoomTypesRouteImport.update({
-  id: '/room-types',
-  path: '/room-types',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GenerateRoute = GenerateRouteImport.update({
-  id: '/generate',
-  path: '/generate',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CoursesRoute = CoursesRouteImport.update({
-  id: '/courses',
-  path: '/courses',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BuildingsRoute = BuildingsRouteImport.update({
-  id: '/buildings',
-  path: '/buildings',
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -58,131 +48,175 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppScheduleRoute = AppScheduleRouteImport.update({
+  id: '/schedule',
+  path: '/schedule',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRoomsRoute = AppRoomsRouteImport.update({
+  id: '/rooms',
+  path: '/rooms',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRoomTypesRoute = AppRoomTypesRouteImport.update({
+  id: '/room-types',
+  path: '/room-types',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGenerateRoute = AppGenerateRouteImport.update({
+  id: '/generate',
+  path: '/generate',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCoursesRoute = AppCoursesRouteImport.update({
+  id: '/courses',
+  path: '/courses',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBuildingsRoute = AppBuildingsRouteImport.update({
+  id: '/buildings',
+  path: '/buildings',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/buildings': typeof BuildingsRoute
-  '/courses': typeof CoursesRoute
-  '/generate': typeof GenerateRoute
-  '/room-types': typeof RoomTypesRoute
-  '/rooms': typeof RoomsRoute
-  '/schedule': typeof ScheduleRoute
-  '/settings': typeof SettingsRoute
+  '/app': typeof AppRouteWithChildren
+  '/marketing': typeof MarketingRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
+  '/app/buildings': typeof AppBuildingsRoute
+  '/app/courses': typeof AppCoursesRoute
+  '/app/generate': typeof AppGenerateRoute
+  '/app/room-types': typeof AppRoomTypesRoute
+  '/app/rooms': typeof AppRoomsRoute
+  '/app/schedule': typeof AppScheduleRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/buildings': typeof BuildingsRoute
-  '/courses': typeof CoursesRoute
-  '/generate': typeof GenerateRoute
-  '/room-types': typeof RoomTypesRoute
-  '/rooms': typeof RoomsRoute
-  '/schedule': typeof ScheduleRoute
-  '/settings': typeof SettingsRoute
+  '/marketing': typeof MarketingRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
+  '/app/buildings': typeof AppBuildingsRoute
+  '/app/courses': typeof AppCoursesRoute
+  '/app/generate': typeof AppGenerateRoute
+  '/app/room-types': typeof AppRoomTypesRoute
+  '/app/rooms': typeof AppRoomsRoute
+  '/app/schedule': typeof AppScheduleRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/buildings': typeof BuildingsRoute
-  '/courses': typeof CoursesRoute
-  '/generate': typeof GenerateRoute
-  '/room-types': typeof RoomTypesRoute
-  '/rooms': typeof RoomsRoute
-  '/schedule': typeof ScheduleRoute
-  '/settings': typeof SettingsRoute
+  '/app': typeof AppRouteWithChildren
+  '/marketing': typeof MarketingRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
+  '/app/buildings': typeof AppBuildingsRoute
+  '/app/courses': typeof AppCoursesRoute
+  '/app/generate': typeof AppGenerateRoute
+  '/app/room-types': typeof AppRoomTypesRoute
+  '/app/rooms': typeof AppRoomsRoute
+  '/app/schedule': typeof AppScheduleRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/buildings'
-    | '/courses'
-    | '/generate'
-    | '/room-types'
-    | '/rooms'
-    | '/schedule'
-    | '/settings'
+    | '/app'
+    | '/marketing'
+    | '/signin'
+    | '/signup'
+    | '/app/buildings'
+    | '/app/courses'
+    | '/app/generate'
+    | '/app/room-types'
+    | '/app/rooms'
+    | '/app/schedule'
+    | '/app/settings'
+    | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/buildings'
-    | '/courses'
-    | '/generate'
-    | '/room-types'
-    | '/rooms'
-    | '/schedule'
-    | '/settings'
+    | '/marketing'
+    | '/signin'
+    | '/signup'
+    | '/app/buildings'
+    | '/app/courses'
+    | '/app/generate'
+    | '/app/room-types'
+    | '/app/rooms'
+    | '/app/schedule'
+    | '/app/settings'
+    | '/app'
   id:
     | '__root__'
     | '/'
-    | '/buildings'
-    | '/courses'
-    | '/generate'
-    | '/room-types'
-    | '/rooms'
-    | '/schedule'
-    | '/settings'
+    | '/app'
+    | '/marketing'
+    | '/signin'
+    | '/signup'
+    | '/app/buildings'
+    | '/app/courses'
+    | '/app/generate'
+    | '/app/room-types'
+    | '/app/rooms'
+    | '/app/schedule'
+    | '/app/settings'
+    | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BuildingsRoute: typeof BuildingsRoute
-  CoursesRoute: typeof CoursesRoute
-  GenerateRoute: typeof GenerateRoute
-  RoomTypesRoute: typeof RoomTypesRoute
-  RoomsRoute: typeof RoomsRoute
-  ScheduleRoute: typeof ScheduleRoute
-  SettingsRoute: typeof SettingsRoute
+  AppRoute: typeof AppRouteWithChildren
+  MarketingRoute: typeof MarketingRoute
+  SigninRoute: typeof SigninRoute
+  SignupRoute: typeof SignupRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/schedule': {
-      id: '/schedule'
-      path: '/schedule'
-      fullPath: '/schedule'
-      preLoaderRoute: typeof ScheduleRouteImport
+    '/signin': {
+      id: '/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/rooms': {
-      id: '/rooms'
-      path: '/rooms'
-      fullPath: '/rooms'
-      preLoaderRoute: typeof RoomsRouteImport
+    '/marketing': {
+      id: '/marketing'
+      path: '/marketing'
+      fullPath: '/marketing'
+      preLoaderRoute: typeof MarketingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/room-types': {
-      id: '/room-types'
-      path: '/room-types'
-      fullPath: '/room-types'
-      preLoaderRoute: typeof RoomTypesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/generate': {
-      id: '/generate'
-      path: '/generate'
-      fullPath: '/generate'
-      preLoaderRoute: typeof GenerateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/courses': {
-      id: '/courses'
-      path: '/courses'
-      fullPath: '/courses'
-      preLoaderRoute: typeof CoursesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/buildings': {
-      id: '/buildings'
-      path: '/buildings'
-      fullPath: '/buildings'
-      preLoaderRoute: typeof BuildingsRouteImport
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -192,18 +226,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/schedule': {
+      id: '/app/schedule'
+      path: '/schedule'
+      fullPath: '/app/schedule'
+      preLoaderRoute: typeof AppScheduleRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/rooms': {
+      id: '/app/rooms'
+      path: '/rooms'
+      fullPath: '/app/rooms'
+      preLoaderRoute: typeof AppRoomsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/room-types': {
+      id: '/app/room-types'
+      path: '/room-types'
+      fullPath: '/app/room-types'
+      preLoaderRoute: typeof AppRoomTypesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/generate': {
+      id: '/app/generate'
+      path: '/generate'
+      fullPath: '/app/generate'
+      preLoaderRoute: typeof AppGenerateRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/courses': {
+      id: '/app/courses'
+      path: '/courses'
+      fullPath: '/app/courses'
+      preLoaderRoute: typeof AppCoursesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/buildings': {
+      id: '/app/buildings'
+      path: '/buildings'
+      fullPath: '/app/buildings'
+      preLoaderRoute: typeof AppBuildingsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppBuildingsRoute: typeof AppBuildingsRoute
+  AppCoursesRoute: typeof AppCoursesRoute
+  AppGenerateRoute: typeof AppGenerateRoute
+  AppRoomTypesRoute: typeof AppRoomTypesRoute
+  AppRoomsRoute: typeof AppRoomsRoute
+  AppScheduleRoute: typeof AppScheduleRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppBuildingsRoute: AppBuildingsRoute,
+  AppCoursesRoute: AppCoursesRoute,
+  AppGenerateRoute: AppGenerateRoute,
+  AppRoomTypesRoute: AppRoomTypesRoute,
+  AppRoomsRoute: AppRoomsRoute,
+  AppScheduleRoute: AppScheduleRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BuildingsRoute: BuildingsRoute,
-  CoursesRoute: CoursesRoute,
-  GenerateRoute: GenerateRoute,
-  RoomTypesRoute: RoomTypesRoute,
-  RoomsRoute: RoomsRoute,
-  ScheduleRoute: ScheduleRoute,
-  SettingsRoute: SettingsRoute,
+  AppRoute: AppRouteWithChildren,
+  MarketingRoute: MarketingRoute,
+  SigninRoute: SigninRoute,
+  SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

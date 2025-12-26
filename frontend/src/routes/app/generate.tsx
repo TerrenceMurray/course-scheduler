@@ -26,7 +26,7 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { CountUp } from '@/components/count-up'
 
-export const Route = createFileRoute('/generate')({
+export const Route = createFileRoute('/app/generate')({
   component: GeneratePage,
 })
 
@@ -377,7 +377,7 @@ function GeneratePage() {
                   </div>
 
                   <Button asChild className="w-full">
-                    <Link to="/schedule">
+                    <Link to="/app/schedule">
                       See Your Schedule
                       <ArrowRight className="ml-2 size-4" />
                     </Link>

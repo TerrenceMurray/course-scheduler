@@ -1,0 +1,4 @@
+export { CreateCourseModal } from './create-course-modal'
+export { CreateRoomModal } from './create-room-modal'
+export { CreateBuildingModal } from './create-building-modal'
+export { CreateRoomTypeModal } from './create-room-type-modal'
